@@ -8,8 +8,26 @@ export type RevenueData = {
     acv: number;
     tcv: number;
     revenue: number;
+    S_no: number;
 }
 
 // Define an array type for the data
-export type RevenueDataArray = RevenueData[];
+export type RevenueDataArray ={data:RevenueData[]} ;
+
+// Get the chart data
+export type MonthData = {
+    January: number;
+    February: number;
+    March: number;
+    April: number;
+    May: number;
+    June: number;
+    July: number;
+    August: number;
+    September: number;
+    October: number;
+    November: number;
+    December: number;
+};
+
 

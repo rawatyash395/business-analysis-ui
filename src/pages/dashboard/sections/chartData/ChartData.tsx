@@ -2,10 +2,9 @@ import { FC } from "react";
 import { LineChart } from "../../../../components/charts/LineChart/LineChart";
 import { sumOfACVDataset } from "../../../../utils/chartDataset";
 
-
 import { ChartDataType } from "./ChartData.types";
 
-export const options = {
+const options = {
     responsive: true,
     plugins: {
         legend: {
@@ -21,8 +20,8 @@ export const options = {
 const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
 
-export const ChartData: FC<ChartDataType> = ({ data }) => {
-    const datasets = sumOfACVDataset(labels, data)
+export const ChartData: FC<ChartDataType> = ({ data, selectedProduct }) => {
+    const datasets = sumOfACVDataset(labels, data, selectedProduct)
     return (
         <LineChart options={options} data={datasets} />
     )

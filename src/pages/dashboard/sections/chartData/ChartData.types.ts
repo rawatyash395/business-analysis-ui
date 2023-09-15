@@ -1,5 +1,6 @@
-import { RevenueDataArray } from "../../../../types/revenue"
+import { MonthData } from "../../../../types/revenue"
 
 export type ChartDataType = {
-    data: RevenueDataArray
+    data: Record<string, MonthData>
+    selectedProduct: string
 }

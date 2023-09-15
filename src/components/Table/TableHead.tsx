@@ -1,44 +1,29 @@
-import { useCallback } from 'react'
+import { useCallback, MouseEvent } from 'react';
 
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import TableHead from "@mui/material/TableHead";
-import Checkbox from "@mui/material/Checkbox";
 import TableSortLabel from "@mui/material/TableSortLabel";
 import Box from "@mui/material/Box";
 import { visuallyHidden } from "@mui/utils";
 
+import { EnhancedTableHeadProps } from './Table.types';
 
-export const EnhancedTableHead = (props) => {
+export const EnhancedTableHead: React.FC<EnhancedTableHeadProps> = (props) => {
   const {
-    onSelectAllClick,
     order,
     orderBy,
-    numSelected,
-    rowCount,
     onRequestSort,
     headerData,
-    isSelect
   } = props;
 
-  const createSortHandler = useCallback((property) => (event) => {
+  const createSortHandler = useCallback((property: string) => (event: MouseEvent) => {
     onRequestSort(event, property);
   }, [onRequestSort]);
 
   return (
     <TableHead>
       <TableRow>
-        {isSelect && <TableCell padding="checkbox">
-          <Checkbox
-            color="primary"
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{
-              "aria-label": "select all desserts",
-            }}
-          />
-        </TableCell>}
         {headerData.map((headCell) => (
           <TableCell
             key={`table-header-${headCell.label}`}
@@ -52,7 +37,7 @@ export const EnhancedTableHead = (props) => {
               onClick={createSortHandler(headCell.id)}
             >
               {headCell.label}
-              {orderBy === headCell.id ? (
+              {orderBy === headCell.id && headCell.sort ? (
                 <Box component="span" sx={visuallyHidden}>
                   {order === "desc" ? "sorted descending" : "sorted ascending"}
                 </Box>

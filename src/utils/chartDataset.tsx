@@ -1,28 +1,32 @@
-import { RevenueDataArray } from "../types/revenue";
+import { MonthData } from "../types/revenue";
 
-export const sumOfACVDataset = (labels: Array<string>, data: RevenueDataArray) => {
-    // Extract unique product names from the original data
-    const uniqueProducts = [...new Set(data.map(item => item.product))];
-
+export const sumOfACVDataset = (labels: Array<string>, data: Record<string, MonthData>, selectedProduct: string) => {
+    const products = Object.keys(data)
     // Prepare an array of random colors for the datasets
-    const randomColors = uniqueProducts.map(() => `rgb(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255})`);
+    const randomColors = products.map(() => `rgb(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255})`);
 
-    // Prepare the datasets based on unique products
-    const datasets = uniqueProducts.map((product, index) => {
-        const productData = data.filter(item => item.product === product);
-        const productRevenueData = labels.map(month => {
-            const matchingEntry = productData.find(item => item.month === month);
-            return matchingEntry ? matchingEntry.revenue : 0;
+    let datasets = []
+    if (selectedProduct === 'all') {
+        // Prepare the datasets based on unique products
+        datasets = products.map((product, index) => {
+            return {
+                label: product,
+                data: Object.values(data[product]),
+                borderColor: randomColors[index],
+                backgroundColor: `rgba(${randomColors[index]}, 0.5)`,
+            };
         });
+    } else {
+        datasets = products.filter((productKey) => productKey === selectedProduct).map((product, index) => {
+            return {
+                label: product,
+                data: Object.values(data[product]),
+                borderColor: randomColors[index],
+                backgroundColor: `rgba(${randomColors[index]}, 0.5)`,
+            };
+        });
+    }
 
-
-        return {
-            label: product,
-            data: productRevenueData,
-            borderColor: randomColors[index],
-            backgroundColor: `rgba(${randomColors[index]}, 0.5)`,
-        };
-    });
 
     // Final data structure
     return {

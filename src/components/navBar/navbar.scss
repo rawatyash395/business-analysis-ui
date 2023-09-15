@@ -1,0 +1,46 @@
+.navbarWrapper {
+    display: flex;
+    .MuiFormControl-root {
+        label {
+            color: #fff;
+            background: #1e73cf;
+        }
+    }
+    .MuiInputBase-root {
+        &:hover {
+            .MuiOutlinedInput-notchedOutline {
+                border-color: #fff;
+            }
+        }
+        .MuiSelect-select {
+            color: #fff;
+        }
+        &.Mui-focused {
+            .MuiOutlinedInput-notchedOutline {
+                border-color: #fff;
+            }
+        }
+        .MuiOutlinedInput-notchedOutline {
+            border-color: #fff;
+            legend {
+                span {
+                    color: #fff;
+                }
+            }
+        }
+    }
+    .content-btn {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        .MuiButtonBase-root {
+            border: 1px solid #fff;
+            color: #fff;
+            padding: 4px 16px;
+            &:hover {
+                background: #fff;
+                color: #113f67;
+            }
+        }
+    }
+}

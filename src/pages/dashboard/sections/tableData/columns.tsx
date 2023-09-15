@@ -2,8 +2,8 @@ import { Column } from "../../../../components/Table/Table.types";
 
 export const tableColumns: Column[] = [
     {
-        id: 'sNumber',
-        key: "sNumber",
+        id: 'S_no',
+        key: "S_no",
         label: "S No.",
         style: {
             align: "left",
@@ -40,6 +40,9 @@ export const tableColumns: Column[] = [
         style: {
             align: "left",
         },
+        cellRenderer: (row) => (
+            <div>{`${row.month}-${row.year}`}</div>
+        ),
     },
     {
         id: "acv",
@@ -48,6 +51,7 @@ export const tableColumns: Column[] = [
         style: {
             align: "left",
         },
+        sort: true
     },
     {
         id: "tcv",
