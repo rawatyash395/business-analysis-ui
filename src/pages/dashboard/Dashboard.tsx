@@ -14,6 +14,8 @@ import { getRevenueData, getRevenueChartData } from '../../api/revenue.api'
 
 import { MonthData, RevenueDataArray } from '../../types/revenue'
 
+import '../../components/navBar/navbar.scss'
+
 type MyQueries = [
     UseQueryResult<{ data: { data: Record<string, MonthData>; revenueType: string[], } }, Error>,
     UseQueryResult<{ data: RevenueDataArray & { total: number }, }, Error>
@@ -82,27 +84,33 @@ export const Dashboard: FC = () => {
     return (
         <div>
             <NavBar revenueTypes={revenueTypes} />
-            <div>
-                <Box sx={{ padding: '10px 21px', display: 'flex', marginTop: '20px' }}>
-                    <BasicSelect
-                        label={'Product'}
-                        value={selectedProduct}
-                        options={[{ label: 'all', value: 'all' }, ...products]}
-                        onChange={handleProductChange}
-                    />
+            <Box sx={{
+                display: 'flex',
+                justifyContent: 'center'
+            }}>
+                <Box sx={{ maxWidth: '80%' }}>
+                    <Box sx={{ padding: '10px 21px', display: 'flex', marginTop: '20px' }}>
+                        <BasicSelect
+                            label={'Product'}
+                            value={selectedProduct}
+                            options={[{ label: 'all', value: 'all' }, ...products]}
+                            onChange={handleProductChange}
+                        />
+
+                    </Box>
+                    {revenueChartsQuery?.data && <ChartData data={revenueChartsQuery.data.data.data} selectedProduct={selectedProduct} />}
+                    {revenueDataQuery?.data &&
+                        <TableData
+                            data={revenueDataQuery.data.data}
+                            count={revenueDataQuery.data.data.total}
+                            page={page}
+                            handleChangePage={handleChangePage}
+                        />
+                    }
 
                 </Box>
-                {revenueChartsQuery?.data && <ChartData data={revenueChartsQuery.data.data.data} selectedProduct={selectedProduct} />}
-                {revenueDataQuery?.data &&
-                    <TableData
-                        data={revenueDataQuery.data.data}
-                        count={revenueDataQuery.data.data.total}
-                        page={page}
-                        handleChangePage={handleChangePage}
-                    />
-                }
+            </Box>
 
-            </div>
         </div>
     )
 }

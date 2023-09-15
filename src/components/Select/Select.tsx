@@ -25,7 +25,6 @@ export const BasicSelect: FC<SelectType> = ({
                 {...rest}
                 value={value}
                 onChange={onChange}
-                variant='outlined'
             >
                 {options.map(({ label, value }) => (
                     <MenuItem value={value} key={value}>{label}</MenuItem>

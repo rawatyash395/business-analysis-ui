@@ -22,7 +22,7 @@ export const EnhancedTableHead: React.FC<EnhancedTableHeadProps> = (props) => {
   }, [onRequestSort]);
 
   return (
-    <TableHead>
+    <TableHead sx={{ backgroundColor: '#1e73cf' }}>
       <TableRow>
         {headerData.map((headCell) => (
           <TableCell
@@ -35,6 +35,7 @@ export const EnhancedTableHead: React.FC<EnhancedTableHeadProps> = (props) => {
               active={orderBy === headCell.id}
               direction={orderBy === headCell.id ? order : "asc"}
               onClick={createSortHandler(headCell.id)}
+              sx={{ color: '#fff' }}
             >
               {headCell.label}
               {orderBy === headCell.id && headCell.sort ? (

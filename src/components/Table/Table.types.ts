@@ -7,7 +7,7 @@ export type Column = {
     id: string;
     label: string;
     key: string;
-    style?: unknown;
+    style?: Record<string, unknown>;
     cellRenderer?: (row: RevenueData) => React.ReactNode;
     sort?: boolean
 }

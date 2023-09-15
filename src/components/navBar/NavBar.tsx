@@ -1,5 +1,6 @@
 import { FC, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -9,11 +10,11 @@ import { Button, SelectChangeEvent } from '@mui/material';
 
 import { BasicSelect } from '../Select/Select';
 
+import { getRevenueChartData } from '../../api/revenue.api';
+
 import { NavBarType } from './NavBar.type';
 
 import './navbar.scss';
-import { useQuery } from '@tanstack/react-query';
-import { getRevenueChartData } from '../../api/revenue.api';
 
 /**
 * Components - NavBar

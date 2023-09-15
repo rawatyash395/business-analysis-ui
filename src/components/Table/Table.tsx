@@ -34,8 +34,8 @@ export const EnhancedTable: React.FC<EnhancedTableProps> = ({
   );
 
   return (
-    <Box sx={{ width: "100%", overflow: "auto" }}>
-      <Paper sx={{ width: "100%", mb: 2 }}>
+    <Box sx={{ width: "100%", overflow: "auto", border: '1px solid #000', marginBottom: '15px' }}>
+      <Paper sx={{ width: "100%" }}>
         <TableContainer>
           <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
             <TableHead

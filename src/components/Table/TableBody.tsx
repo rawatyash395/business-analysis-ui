@@ -4,6 +4,7 @@ import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 
 import { EnhancedTableBodyProps } from './Table.types'
+import { RevenueData } from '../../types/revenue';
 
 export const EnhancedTableBody: React.FC<EnhancedTableBodyProps> = ({
   columns,
@@ -25,7 +26,7 @@ export const EnhancedTableBody: React.FC<EnhancedTableBodyProps> = ({
               <TableCell {...column?.style} key={keyIndex}>
                 {column?.cellRenderer
                   ? column?.cellRenderer(row)
-                  : row[column.key]}
+                  : row[column.key as keyof RevenueData]}
               </TableCell>
             ))}
           </TableRow>
