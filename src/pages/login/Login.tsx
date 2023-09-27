@@ -11,6 +11,7 @@ import { validateUserLogin } from '../../utils/validation';
 
 import { UserType } from './Login.types'
 import './style.scss';
+import { AxiosError } from 'axios';
 
 const DefaultUser = {
     email: '',
@@ -39,8 +40,8 @@ export const Login: FC = () => {
                 navigate('/')
             }
         },
-        onError: () => {
-
+        onError: (err: AxiosError<string>) => {
+            setError(prev => ({ ...prev, beError: err?.response?.data }))
         }
     })
 
@@ -103,6 +104,9 @@ export const Login: FC = () => {
                     <div className='right-side'>
                         <img src="" alt="" />
                     </div>
+                </div>
+                <div>
+                    <h1 className='error-message'>{error?.beError}</h1>
                 </div>
             </div>
         </>

@@ -1,5 +1,5 @@
-import { FC, useEffect, useMemo, useState } from 'react'
-import { UseQueryResult, useQueries } from '@tanstack/react-query'
+import { FC, useCallback, useEffect, useMemo, useState } from 'react'
+import { useQuery } from '@tanstack/react-query'
 
 import Box from '@mui/material/Box'
 import { SelectChangeEvent } from '@mui/material'
@@ -16,10 +16,8 @@ import { MonthData, RevenueDataArray } from '../../types/revenue'
 
 import '../../components/navBar/navbar.scss'
 
-type MyQueries = [
-    UseQueryResult<{ data: { data: Record<string, MonthData>; revenueType: string[], } }, Error>,
-    UseQueryResult<{ data: RevenueDataArray & { total: number }, }, Error>
-]
+type ChartDataType = { data: { data: Record<string, MonthData>; revenueType: string[] } }
+type RevenueDataType = { data: RevenueDataArray & { total: number } }
 
 /**
  * Pages - Dashboard
@@ -28,25 +26,25 @@ export const Dashboard: FC = () => {
     const [selectedProduct, setSelectedProduct] = useState('all')
     const [page, setPage] = useState<number>(0)
 
+    const revenueChartsQuery = useQuery<ChartDataType, Error>({
+        queryKey: ['revenueChartsQuery'],
+        queryFn: () => getRevenueChartData(),
+        refetchOnWindowFocus: false,
+    })
 
-    const [revenueChartsQuery, revenueDataQuery] = useQueries<MyQueries>({
-        queries: [
-            {
-                queryKey: ['revenueChartsQuery'],
-                queryFn: () => getRevenueChartData(),
-            },
+    const revenueDataQuery = useQuery<RevenueDataType, Error>({
+        queryKey: ['revenueDataQuery'],
+        queryFn: () => getRevenueData({ page }),
+        refetchOnWindowFocus: false,
+        refetchOnMount: false,
+    })
 
-            {
-                queryKey: ['revenueDataQuery'],
-                queryFn: () => getRevenueData({ page }),
-            },
-        ],
-    });
+    const { refetch } = revenueDataQuery
 
     useEffect(() => {
-        revenueDataQuery.refetch()
-    }, [page])
-
+        // Refetch revenue paginated data based on current page
+        refetch()
+    }, [page, refetch])
 
     const revenueTypes = useMemo(() => {
         return (revenueChartsQuery.data?.data.revenueType)?.map(type => ({ label: type, value: type })) || []
@@ -62,6 +60,17 @@ export const Dashboard: FC = () => {
         }));
     }, [revenueChartsQuery])
 
+    /**
+     * Manage all the filter change
+     */
+    const handleProductChange = useCallback((event: SelectChangeEvent<unknown>) => {
+        setSelectedProduct(event.target.value as string)
+    }, [])
+
+    const handleChangePage = useCallback((_: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
+        setPage(newPage);
+    }, []);
+
     if (revenueChartsQuery.isLoading) {
         return <span>Loading...</span>
     }
@@ -70,16 +79,6 @@ export const Dashboard: FC = () => {
         return <span>Error: {revenueChartsQuery?.error?.message}</span>
     }
 
-    /**
-     * Manage all the filter change
-     */
-    const handleProductChange = (event: SelectChangeEvent<unknown>) => {
-        setSelectedProduct(event.target.value as string)
-    }
-
-    const handleChangePage = (_: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
-        setPage(newPage);
-    };
 
     return (
         <div>
@@ -93,12 +92,12 @@ export const Dashboard: FC = () => {
                         <BasicSelect
                             label={'Product'}
                             value={selectedProduct}
-                            options={[{ label: 'all', value: 'all' }, ...products]}
+                            options={[{ label: 'All', value: 'all' }, ...products]}
                             onChange={handleProductChange}
                         />
 
                     </Box>
-                    {revenueChartsQuery?.data && <ChartData data={revenueChartsQuery.data.data.data} selectedProduct={selectedProduct} />}
+                    {revenueChartsQuery?.data && <ChartData data={revenueChartsQuery.data.data.data || {}} selectedProduct={selectedProduct} />}
                     {revenueDataQuery?.data &&
                         <TableData
                             data={revenueDataQuery.data.data}

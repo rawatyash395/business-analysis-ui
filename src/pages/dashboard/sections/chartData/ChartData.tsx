@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, memo } from "react";
 import { LineChart } from "../../../../components/charts/LineChart/LineChart";
 import { sumOfACVDataset } from "../../../../utils/chartDataset";
 
@@ -22,9 +22,9 @@ const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 
 /**
  * Pages - Dashboard -> Section -> ChartData
  */
-export const ChartData: FC<ChartDataType> = ({ data, selectedProduct }) => {
+export const ChartData: FC<ChartDataType> = memo(({ data, selectedProduct }) => {
     const datasets = sumOfACVDataset(labels, data, selectedProduct)
     return (
         <LineChart options={options} data={datasets} />
     )
-}
+})

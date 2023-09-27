@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, memo } from 'react';
 
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -10,7 +10,7 @@ import { SelectType } from './Select.types';
 /**
  * Components - Select
  */
-export const BasicSelect: FC<SelectType> = ({
+export const BasicSelect: FC<SelectType> = memo(({
     label,
     value,
     onChange,
@@ -32,4 +32,4 @@ export const BasicSelect: FC<SelectType> = ({
             </Select>
         </FormControl>
     );
-}
+})
