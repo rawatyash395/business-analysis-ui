@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, memo, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 
@@ -19,13 +19,15 @@ import './navbar.scss';
 /**
 * Components - NavBar
 */
-export const NavBar: FC<NavBarType> = ({ revenueTypes }) => {
+export const NavBar: FC<NavBarType> = memo(({ revenueTypes }) => {
     const navigate = useNavigate()
     const [revenueType, setRevenueType] = useState(revenueTypes?.[0]?.value || '')
 
     const { refetch } = useQuery({
         queryKey: ['revenueChartsQuery'],
         queryFn: () => getRevenueChartData({ revenueType }),
+        refetchOnWindowFocus: false,
+        refetchOnMount: false
     })
 
     const user = localStorage.getItem('email')?.split('@')[0] || ''
@@ -56,7 +58,7 @@ export const NavBar: FC<NavBarType> = ({ revenueTypes }) => {
                         <BasicSelect
                             label='Revenue Type'
                             value={revenueType}
-                            options={revenueTypes}
+                            options={[{ label: 'All', value: 'all' }, ...revenueTypes]}
                             onChange={handleSelectTypeChange}
                         />
                     </Box>
@@ -69,9 +71,8 @@ export const NavBar: FC<NavBarType> = ({ revenueTypes }) => {
                             Log Out
                         </Button>
                     </Box>
-
                 </Toolbar>
             </AppBar>
         </Box>
     );
-}
+})
